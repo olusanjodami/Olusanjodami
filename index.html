@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anchor Point — Brand Identity &amp; Market Positioning Proposal</title>
+<meta name="description" content="Anchor Point — a brand identity and market positioning proposal. Building a distinctive legal brand from the ground up.">
+<meta name="theme-color" content="#ffffff">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   ANCHOR POINT — Design tokens
+   Palette is strictly limited to:
+     · Slate Gray  #708090  (primary — text, rules, structure)
+     · Soft Ochre  #C29B61  (accent — numbers, marks, highlights)
+     · black / white / neutral paper grounds
+   ============================================================ */
+:root{
+  --slate:          #708090;
+  --slate-deep:     #4e5862;   /* darker slate — headings, table head */
+  --slate-mid:      #5c6771;   /* table head ground */
+  --slate-70:       rgba(112,128,144,.72);
+  --slate-45:       rgba(112,128,144,.45);
+  --slate-25:       rgba(112,128,144,.25);
+  --slate-14:       rgba(112,128,144,.14);
+  --slate-08:       rgba(112,128,144,.08);
+  --slate-04:       rgba(112,128,144,.04);
+
+  --ochre:          #C29B61;
+  --ochre-soft:     rgba(194,155,97,.10);
+  --ochre-tint:     rgba(194,155,97,.18);
+  --ochre-line:     rgba(194,155,97,.40);
+
+  --ink:            #2c3238;   /* near-black body text */
+  --paper:          #ffffff;
+  --paper-tint:     #fafbfb;
+  --white:          #ffffff;
+
+  --serif: "Playfair Display", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --sans:  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --shell: 1000px;
+  --gutter: clamp(1.35rem, 5vw, 3rem);
+  --ph: clamp(4.5rem, 11vw, 9.5rem);      /* section padding block */
+  --ease: cubic-bezier(.22,.68,.24,1);
+}
+
+/* ---------- reset ---------- */
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; }
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  font-weight:400;
+  line-height:1.75;
+  letter-spacing:.003em;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img,svg{ display:block; max-width:100%; }
+h1,h2,h3,h4,h5{ margin:0; font-family:var(--serif); font-weight:500; color:var(--slate-deep); line-height:1.14; letter-spacing:-.012em; text-wrap:balance; }
+p{ margin:0; }
+ul,ol{ margin:0; padding:0; list-style:none; }
+a{ color:inherit; text-decoration:none; }
+strong{ font-weight:600; color:var(--slate-deep); }
+::selection{ background:var(--ochre-tint); color:var(--slate-deep); }
+:focus-visible{ outline:2px solid var(--ochre); outline-offset:3px; border-radius:1px; }
+
+/* ---------- layout primitives ---------- */
+.shell{ width:100%; max-width:var(--shell); margin-inline:auto; padding-inline:var(--gutter); }
+.chapter{ padding-block:var(--ph); position:relative; }
+
+/* ---------- typography ---------- */
+h2.title{ font-size:clamp(2.05rem, 4.4vw, 3rem); }
+h3.subtitle{
+  font-family:var(--sans); font-size:.72rem; font-weight:600;
+  letter-spacing:.24em; text-transform:uppercase; color:var(--slate);
+  margin:0 0 1.1rem;
+}
+.lead{
+  font-size:clamp(1.06rem, 1.55vw, 1.24rem);
+  line-height:1.7; color:var(--slate-deep); font-weight:400;
+  max-width:64ch; text-wrap:pretty;
+}
+.body{ color:var(--slate-deep); text-wrap:pretty; }
+.muted{ color:var(--slate-70); }
+
+/* chapter marker */
+.marker{ display:flex; align-items:baseline; gap:1.1rem; margin-bottom:clamp(2rem,4vw,3.1rem); }
+.marker__num{
+  font-family:var(--serif); font-size:.95rem; color:var(--ochre);
+  letter-spacing:.06em; font-variant-numeric:tabular-nums;
+}
+.marker__label{
+  font-size:.688rem; font-weight:500; letter-spacing:.28em; text-transform:uppercase; color:var(--slate);
+}
+.marker__line{ flex:1; height:1px; background:var(--slate-14); transform:translateY(-.32em); }
+
+/* ---------- reveal animation ---------- */
+.rv{ opacity:0; transform:translateY(22px); transition:opacity .95s var(--ease), transform .95s var(--ease); will-change:opacity, transform; }
+.rv.in{ opacity:1; transform:none; }
+@media (prefers-reduced-motion: reduce){
+  .rv{ opacity:1 !important; transform:none !important; transition:none !important; }
+}
+
+/* ---------- chrome: progress + running header ---------- */
+.progress{
+  position:fixed; inset:0 0 auto 0; height:2px; z-index:60;
+  background:transparent; pointer-events:none;
+}
+.progress__bar{ height:100%; width:0%; background:var(--ochre); opacity:.9; transition:width .12s linear; }
+.runhead{
+  position:fixed; inset:2px 0 auto 0; z-index:55;
+  background:rgba(255,255,255,.86);
+  backdrop-filter:saturate(180%) blur(14px);
+  -webkit-backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid var(--slate-08);
+  transform:translateY(-102%); transition:transform .55s var(--ease);
+}
+.runhead.is-shown{ transform:none; }
+.runhead__in{
+  max-width:var(--shell); margin-inline:auto; padding:.85rem var(--gutter);
+  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+}
+.runhead__brand{
+  font-family:var(--serif); font-size:.82rem; letter-spacing:.22em; text-transform:uppercase; color:var(--slate-deep);
+}
+.runhead__now{
+  font-size:.625rem; letter-spacing:.2em; text-transform:uppercase; color:var(--slate);
+  display:flex; align-items:center; gap:.65rem; white-space:nowrap;
+}
+.runhead__now span:first-child{ color:var(--ochre); font-variant-numeric:tabular-nums; }
+@media (max-width:640px){ .runhead__now{ display:none; } }
+
+/* ============================================================
+   01 · COVER
+   ============================================================ */
+.cover{
+  position:relative; min-height:100svh; display:flex; flex-direction:column;
+  background:
+    radial-gradient(120% 90% at 50% -10%, rgba(194,155,97,.13) 0%, rgba(194,155,97,0) 58%),
+    radial-gradient(90% 70% at 50% 108%, rgba(112,128,144,.13) 0%, rgba(112,128,144,0) 62%),
+    linear-gradient(180deg,#fdfdfd 0%, #f7f8f9 100%);
+  overflow:hidden;
+  border-bottom:1px solid var(--slate-08);
+}
+/* fine engraved grid texture */
+.cover::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:
+    linear-gradient(var(--slate-04) 1px, transparent 1px),
+    linear-gradient(90deg, var(--slate-04) 1px, transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(80% 70% at 50% 45%, #000 0%, transparent 78%);
+  mask-image:radial-gradient(80% 70% at 50% 45%, #000 0%, transparent 78%);
+}
+/* soft paper grain */
+.cover::after{
+  content:""; position:absolute; inset:0; pointer-events:none; opacity:.5;
+  background-image:radial-gradient(rgba(112,128,144,.10) .5px, transparent .6px);
+  background-size:4px 4px;
+}
+.cover__in{
+  position:relative; z-index:2; flex:1;
+  max-width:var(--shell); width:100%; margin-inline:auto; padding:clamp(1.6rem,4vw,2.6rem) var(--gutter) clamp(4.4rem,7vw,5.6rem);
+  display:flex; flex-direction:column;
+}
+.cover__top{ display:flex; justify-content:space-between; align-items:center; gap:1rem; }
+.cover__top span{ font-size:.625rem; letter-spacing:.26em; text-transform:uppercase; color:var(--slate-70); }
+.cover__center{
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:clamp(2.5rem,7vw,5rem) 0;
+}
+.cover__emblem{ width:clamp(46px,5.2vw,58px); height:auto; margin-bottom:clamp(1.6rem,3.4vw,2.5rem); opacity:.95; }
+.cover__emblem line,.cover__emblem path,.cover__emblem circle{ vector-effect:non-scaling-stroke; }
+.cover h1{
+  font-size:clamp(2.7rem, 10.2vw, 6.4rem);
+  line-height:.98; letter-spacing:.055em; font-weight:500;
+  color:var(--slate-deep); margin:0;
+  text-indent:.055em; /* optical balance for tracking */
+}
+.cover__rule{
+  width:clamp(56px,9vw,92px); height:1px; background:var(--ochre); opacity:.85;
+  margin:clamp(1.7rem,3.6vw,2.6rem) auto;
+}
+.cover__sub{
+  font-size:clamp(.72rem, 1.35vw, .875rem); font-weight:500;
+  letter-spacing:.26em; text-transform:uppercase; color:var(--slate);
+  max-width:34ch; line-height:1.9;
+}
+.cover__tag{
+  margin-top:clamp(1.8rem,3.6vw,2.6rem);
+  font-family:var(--serif); font-style:italic; font-weight:400;
+  font-size:clamp(1.05rem,2.1vw,1.4rem); color:var(--slate-deep); opacity:.92;
+  max-width:30ch; line-height:1.6;
+}
+.cover__meta{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--slate-14);
+}
+.cover__meta > div{ padding:1.35rem 1rem 0 0; }
+.cover__meta dt{
+  font-size:.594rem; letter-spacing:.24em; text-transform:uppercase;
+  color:var(--ochre); margin-bottom:.5rem; font-weight:500;
+}
+.cover__meta dd{
+  margin:0; font-size:.875rem; color:var(--slate-deep); line-height:1.5;
+}
+@media (max-width:820px){
+  .cover__meta{ grid-template-columns:repeat(2,1fr); row-gap:1.5rem; }
+  .cover__meta > div{ padding:1.15rem 1.2rem 0 0; }
+}
+@media (max-width:460px){
+  .cover__meta{ grid-template-columns:1fr; row-gap:0; }
+  .cover__meta > div{ padding:1.1rem 0; border-top:1px solid var(--slate-08); }
+  .cover__meta > div:first-child{ border-top:0; }
+}
+.scrollcue{
+  position:absolute; left:50%; bottom:1.1rem; transform:translateX(-50%); z-index:3;
+  display:flex; flex-direction:column; align-items:center; gap:.6rem;
+  font-size:.5625rem; letter-spacing:.3em; text-transform:uppercase; color:var(--slate-45);
+}
+.scrollcue i{ display:block; width:1px; height:34px; background:linear-gradient(var(--ochre-line), transparent); }
+@media (max-height:640px){ .scrollcue{ display:none; } }
+
+/* ============================================================
+   02 · THE OPPORTUNITY  /  03 · APPROACH
+   ============================================================ */
+.split{ display:grid; grid-template-columns:1.08fr .92fr; gap:clamp(2.2rem,5.5vw,4.6rem); align-items:start; }
+.split--even{ grid-template-columns:1fr 1fr; }
+.split__aside{
+  padding-left:clamp(1.6rem,3.4vw,2.9rem);
+  border-left:1px solid var(--slate-14);
+}
+@media (max-width:860px){
+  .split,.split--even{ grid-template-columns:1fr; gap:2.6rem; }
+  .split__aside{ padding-left:0; border-left:0; padding-top:2.4rem; border-top:1px solid var(--slate-14); }
+}
+
+.stack > * + *{ margin-top:1.5rem; }
+.stack-lg > * + *{ margin-top:clamp(2rem,4vw,3rem); }
+
+/* accent bullets */
+.bullets{ margin-top:2rem; }
+.bullets li{
+  position:relative; padding-left:1.7rem; padding-block:.72rem;
+  color:var(--slate-deep); font-size:.9688rem; line-height:1.72;
+}
+.bullets li + li{ border-top:1px solid var(--slate-08); }
+.bullets li::before{
+  content:""; position:absolute; left:0; top:1.42em;
+  width:6px; height:6px; background:var(--ochre); border-radius:1px;
+  transform:rotate(45deg);
+}
+.bullets--plain li::before{ border-radius:50%; transform:none; }
+
+/* pull quote */
+.pull{
+  border-left:2px solid var(--ochre); padding:.2rem 0 .2rem 1.5rem;
+  font-family:var(--serif); font-size:clamp(1.1rem,2vw,1.34rem);
+  line-height:1.62; color:var(--slate-deep); font-style:italic;
+}
+.pull cite{ display:block; margin-top:1.1rem; font-family:var(--sans); font-style:normal;
+  font-size:.625rem; letter-spacing:.24em; text-transform:uppercase; color:var(--slate); }
+
+/* tinted panel */
+.panel{
+  background:var(--ochre-soft);
+  border:1px solid var(--ochre-tint);
+  padding:clamp(1.7rem,3.6vw,2.6rem);
+}
+.panel__title{
+  font-family:var(--serif); font-size:1.24rem; color:var(--slate-deep);
+  margin-bottom:1.1rem;
+}
+.note{ font-size:.7812rem; line-height:1.7; color:var(--slate-70); }
+
+/* ============================================================
+   PROCESS RAIL  (Discover → Govern)
+   ============================================================ */
+.steps{
+  margin-top:clamp(2.4rem,5vw,3.4rem);
+  display:grid; grid-template-columns:repeat(5,1fr);
+  border-top:1px solid var(--slate-14);
+}
+.steps li{
+  position:relative; padding:1.9rem 1.15rem 0 0;
+}
+.steps li::before{
+  content:""; position:absolute; top:-4px; left:0; width:7px; height:7px;
+  background:var(--ochre); border-radius:50%;
+  box-shadow:0 0 0 4px #fff;
+}
+.steps li + li{ padding-left:1.15rem; }
+.steps__k{
+  display:block; font-size:.625rem; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--slate-45); margin-bottom:.55rem; font-variant-numeric:tabular-nums;
+}
+.steps__t{ font-family:var(--serif); font-size:1.2rem; color:var(--ochre); margin-bottom:.6rem; }
+.steps__d{ font-size:.8438rem; line-height:1.68; color:var(--slate-deep); }
+@media (max-width:860px){
+  .steps{ grid-template-columns:1fr 1fr; }
+  .steps li, .steps li + li{ padding:1.6rem 1.1rem 0 0; }
+}
+@media (max-width:540px){ .steps{ grid-template-columns:1fr; } .steps li{ padding-right:0; } }
+
+/* ============================================================
+   PHASE BLOCKS
+   ============================================================ */
+.phase-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:.9rem 1.4rem; margin-bottom:1.4rem; }
+.chip{
+  display:inline-flex; align-items:center; gap:.55rem;
+  font-size:.625rem; font-weight:600; letter-spacing:.24em; text-transform:uppercase;
+  color:var(--ochre);
+}
+.chip::after{ content:""; width:22px; height:1px; background:var(--ochre-line); }
+
+/* pricing callout */
+.price{
+  margin-top:clamp(2rem,4vw,2.8rem);
+  display:grid; grid-template-columns:auto 1px 1fr; align-items:center; gap:clamp(1.4rem,3.4vw,2.6rem);
+  background:var(--ochre-soft);
+  border:1px solid var(--ochre-tint);
+  border-left:3px solid var(--ochre);
+  padding:clamp(1.4rem,3vw,1.9rem) clamp(1.5rem,3.4vw,2.4rem);
+}
+.price__fee{
+  font-family:var(--serif); font-size:clamp(1.65rem,3.6vw,2.3rem);
+  color:var(--slate-deep); line-height:1; white-space:nowrap; font-weight:500;
+}
+.price__fee .cur{ font-family:var(--sans); font-size:.56em; font-weight:500; margin-right:.12em; vertical-align:.14em; letter-spacing:.01em; }
+.price__sep{ width:1px; height:100%; min-height:44px; background:var(--ochre-line); }
+.price__side dt{
+  font-size:.594rem; letter-spacing:.24em; text-transform:uppercase; color:var(--slate); margin-bottom:.35rem; font-weight:500;
+}
+.price__side dd{ margin:0 0 .9rem; font-size:.875rem; color:var(--slate-deep); }
+.price__side dd:last-child{ margin-bottom:0; }
+.price__side .dur{ font-family:var(--serif); font-size:1.15rem; color:var(--slate-deep); }
+@media (max-width:700px){
+  .price{ grid-template-columns:1fr; gap:1.3rem; }
+  .price__sep{ width:100%; height:1px; min-height:0; }
+}
+
+/* two-column deliverable lists */
+.cols{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(1.8rem,4vw,3.4rem); }
+@media (max-width:720px){ .cols{ grid-template-columns:1fr; } }
+.list{ border-top:1px solid var(--slate-14); }
+.list li{
+  display:flex; align-items:baseline; gap:.85rem;
+  padding:.72rem 0; border-bottom:1px solid var(--slate-08);
+  font-size:.9062rem; line-height:1.6; color:var(--slate-deep);
+}
+.list li::before{
+  content:""; flex:0 0 auto; width:5px; height:5px; background:var(--ochre);
+  border-radius:50%; transform:translateY(-.18em);
+}
+.list--check li::before{ border-radius:1px; transform:rotate(45deg); }
+
+/* ============================================================
+   TAGLINE DIRECTIONS
+   ============================================================ */
+.tbox{ border:1px solid var(--slate-14); margin-top:clamp(2rem,4vw,2.8rem); background:var(--paper); }
+.tbox__row{
+  display:grid; grid-template-columns:.72fr 1.28fr; gap:clamp(1.2rem,3.4vw,2.8rem);
+  padding:clamp(1.6rem,3.4vw,2.3rem) clamp(1.5rem,3.4vw,2.4rem);
+}
+.tbox__row + .tbox__row{ border-top:1px solid var(--slate-08); }
+.tbox__dir{ font-size:.594rem; letter-spacing:.24em; text-transform:uppercase; color:var(--ochre); font-weight:500; }
+.tbox__name{ font-family:var(--serif); font-size:1.35rem; color:var(--slate-deep); margin-top:.6rem; }
+.tbox__line{
+  font-family:var(--serif); font-size:clamp(1.24rem,2.6vw,1.62rem); font-style:italic;
+  color:var(--slate-deep); line-height:1.5;
+}
+.tbox__why{ margin-top:.95rem; font-size:.875rem; line-height:1.72; color:var(--slate-70); }
+@media (max-width:720px){ .tbox__row{ grid-template-columns:1fr; gap:1.1rem; } }
+
+/* ============================================================
+   CONCEPT CARDS (Logo strategy)
+   ============================================================ */
+.cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(1.1rem,2.4vw,1.6rem); margin-top:clamp(2.2rem,4.5vw,3rem); }
+@media (max-width:880px){ .cards{ grid-template-columns:1fr; } }
+.card{
+  border:1px solid var(--slate-14); background:var(--paper);
+  padding:clamp(1.5rem,3vw,2.1rem); display:flex; flex-direction:column;
+  transition:border-color .5s var(--ease), transform .5s var(--ease), box-shadow .5s var(--ease);
+}
+.card:hover{ border-color:var(--ochre-line); transform:translateY(-3px); box-shadow:0 18px 44px -30px rgba(112,128,144,.55); }
+.card__stage{
+  height:132px; display:flex; align-items:center; justify-content:center;
+  background:var(--paper-tint); border:1px solid var(--slate-08); margin-bottom:1.5rem;
+}
+.card__k{ font-size:.594rem; letter-spacing:.24em; text-transform:uppercase; color:var(--ochre); font-weight:600; }
+.card__t{ font-family:var(--serif); font-size:1.28rem; color:var(--slate-deep); margin:.7rem 0 .85rem; }
+.card__d{ font-size:.875rem; line-height:1.74; color:var(--slate-deep); }
+.card__sig{ margin-top:1.4rem; padding-top:1.1rem; border-top:1px solid var(--slate-08); }
+.card__sig span{ display:block; font-size:.75rem; color:var(--slate); letter-spacing:.06em; line-height:1.9; }
+.card__sig span::before{ content:"— "; color:var(--ochre); }
+
+/* mini identity specimen inside cards */
+.mono{
+  width:74px; height:74px; border-radius:50%; border:1px solid var(--slate-25);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif); font-size:1.7rem; letter-spacing:.02em; color:var(--slate-deep);
+}
+.mono i{ font-style:normal; }
+.mono i + i{ margin-left:.02em; color:var(--ochre); }
+.wordmark{ text-align:center; line-height:1.1; }
+.wordmark b{
+  display:block; font-family:var(--serif); font-weight:500; font-size:1.02rem;
+  letter-spacing:.3em; color:var(--slate-deep); text-transform:uppercase;
+}
+.wordmark span{
+  display:block; margin-top:.45rem; font-size:.5rem; letter-spacing:.42em;
+  text-transform:uppercase; color:var(--slate-45);
+}
+.wordmark em{ display:block; width:100%; height:1px; background:var(--slate-14); margin:.62rem 0; }
+
+/* ============================================================
+   10 · INVESTMENT TABLE
+   ============================================================ */
+.tablewrap{ margin-top:clamp(2.2rem,4.5vw,3rem); }
+table.fees{ width:100%; border-collapse:collapse; }
+table.fees caption{
+  caption-side:top; text-align:left; font-size:.625rem; letter-spacing:.24em;
+  text-transform:uppercase; color:var(--slate); padding-bottom:1rem;
+}
+table.fees th, table.fees td{ text-align:left; vertical-align:top; padding:1.3rem 1rem; }
+table.fees thead th{
+  background:var(--slate-mid); color:#fff;
+  font-family:var(--sans); font-size:.625rem; font-weight:600;
+  letter-spacing:.2em; text-transform:uppercase;
+  border:0;
+}
+table.fees thead th:first-child{ padding-left:1.4rem; }
+table.fees thead th:last-child{ padding-right:1.4rem; text-align:right; }
+table.fees thead th:nth-child(3){ text-align:left; white-space:nowrap; }
+table.fees tbody tr{ border-bottom:1px solid var(--slate-08); }
+table.fees tbody tr:last-child{ border-bottom:0; }
+table.fees tbody th{
+  font-family:var(--serif); font-weight:500; font-size:1.02rem; color:var(--slate-deep);
+  width:30%;
+}
+table.fees tbody td{ font-size:.9375rem; line-height:1.66; color:var(--slate-deep); }
+table.fees tbody td:nth-child(2){ color:var(--slate-70); }
+table.fees tbody td:nth-child(3){ white-space:nowrap; color:var(--slate); font-size:.875rem; letter-spacing:.02em; }
+table.fees tbody td.amt{ text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; font-size:.9375rem; }
+table.fees tbody tr:first-child th,
+table.fees tbody tr:first-child td{ padding-top:1.45rem; }
+table.fees tr.total{ border-top:1px solid var(--ochre-line); border-bottom:1px solid var(--ochre-line); }
+table.fees tr.total th, table.fees tr.total td{
+  color:var(--ochre); font-weight:600; padding-block:1.5rem;
+  font-size:.9375rem; letter-spacing:.02em;
+}
+table.fees tr.total th{ font-family:var(--sans); text-transform:uppercase; letter-spacing:.14em; font-size:.8125rem; }
+table.fees tr.total td.amt{ font-family:var(--serif); font-size:clamp(1.3rem,2.6vw,1.75rem); font-weight:600; }
+@media (max-width:760px){
+  table.fees thead{ display:none; }
+  table.fees tbody tr{ display:grid; grid-template-columns:1fr auto; padding:1.2rem 0; }
+  table.fees tbody th, table.fees tbody td{ display:block; padding:0; width:auto; }
+  table.fees tbody th{ grid-column:1/2; }
+  table.fees tbody td:nth-child(3){ grid-column:1/2; color:var(--slate-45); font-size:.75rem; margin-top:.35rem; }
+  table.fees tbody td:nth-child(2){ grid-column:1/-1; margin-top:.55rem; }
+  table.fees tbody td.amt{ grid-column:2/3; grid-row:1/2; text-align:right; }
+  table.fees tr.total{ display:grid; grid-template-columns:1fr auto; align-items:center; }
+  table.fees tr.total th{ grid-column:1/2; }
+  table.fees tr.total td.amt{ grid-column:2/3; }
+  table.fees tr.total td:nth-child(2), table.fees tr.total td:nth-child(3){ display:none; }
+}
+
+/* payment options */
+.pay{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(1.4rem,3vw,2.4rem); margin-top:clamp(2.6rem,5vw,3.6rem); }
+@media (max-width:820px){ .pay{ grid-template-columns:1fr; } }
+.pay__item{ padding-top:1.4rem; border-top:1px solid var(--slate-14); }
+.pay__item.is-lead{ border-top-color:var(--ochre); }
+.pay__k{ font-family:var(--serif); font-size:1.1rem; color:var(--ochre); }
+.pay__t{ margin-top:.55rem; font-size:.9375rem; font-weight:600; color:var(--slate-deep); }
+.pay__d{ margin-top:.7rem; font-size:.8438rem; line-height:1.7; color:var(--slate-70); }
+
+/* ============================================================
+   11 · ROADMAP TIMELINE
+   ============================================================ */
+.timeline{ position:relative; margin-top:clamp(2.2rem,4.5vw,3rem); padding-left:2.5rem; }
+.timeline::before{
+  content:""; position:absolute; left:5px; top:.7rem; bottom:.7rem; width:1px;
+  background:linear-gradient(180deg, var(--slate-14), var(--slate-25) 65%, var(--ochre-line));
+}
+.timeline li{ position:relative; padding:0 0 clamp(1.9rem,3.6vw,2.6rem) 0; }
+.timeline li:last-child{ padding-bottom:0; }
+.timeline li::before{
+  content:""; position:absolute; left:-2.5rem; top:.55rem;
+  width:11px; height:11px; border-radius:50%;
+  background:var(--ochre); box-shadow:0 0 0 4px #fff, 0 0 0 5px var(--slate-14);
+}
+.timeline li.is-launch::before{ box-shadow:0 0 0 4px #fff, 0 0 0 5px var(--ochre-line); }
+.tl__when{
+  font-size:.625rem; font-weight:600; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--slate); font-variant-numeric:tabular-nums;
+}
+.tl__t{ font-family:var(--serif); font-size:clamp(1.15rem,2.2vw,1.4rem); color:var(--slate-deep); margin:.55rem 0 .55rem; }
+.tl__d{ font-size:.9062rem; line-height:1.72; color:var(--slate-70); max-width:62ch; }
+.timeline li.is-launch .tl__t{ color:var(--ochre); letter-spacing:.1em; text-transform:uppercase; font-size:clamp(1rem,1.9vw,1.2rem); }
+.timeline li.is-launch .tl__when{ color:var(--ochre); }
+
+/* ============================================================
+   12 · PARTNER ASKS · NEXT STEPS · WHY US
+   ============================================================ */
+.ask{
+  background:var(--ochre-soft); border:1px solid var(--ochre-tint);
+  padding:clamp(1.8rem,4vw,2.9rem);
+}
+ol.numbered{ counter-reset:n; margin-top:1.4rem; }
+ol.numbered li{
+  counter-increment:n; position:relative; padding-left:3.1rem;
+  padding-block:1rem; border-bottom:1px solid var(--slate-08);
+  font-size:.9375rem; line-height:1.72; color:var(--slate-deep);
+}
+ol.numbered li:last-child{ border-bottom:0; }
+ol.numbered li::before{
+  content:counter(n,decimal-leading-zero);
+  position:absolute; left:0; top:1rem;
+  font-family:var(--serif); font-size:1.02rem; color:var(--ochre);
+  font-variant-numeric:tabular-nums; letter-spacing:.04em;
+}
+ol.numbered li strong{ display:block; font-family:var(--sans); }
+ol.numbered--loose li{ padding-block:1.35rem; }
+
+.values{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(1.6rem,3.6vw,2.8rem); margin-top:clamp(2rem,4vw,2.8rem); }
+@media (max-width:720px){ .values{ grid-template-columns:1fr; } }
+.value{ padding-top:1.3rem; border-top:1px solid var(--slate-14); }
+.value h4{ font-family:var(--serif); font-size:1.15rem; color:var(--slate-deep); }
+.value p{ margin-top:.6rem; font-size:.875rem; line-height:1.72; color:var(--slate-70); }
+
+/* closing */
+.closing{
+  background:#333b42;
+  color:#fff; position:relative; overflow:hidden;
+  padding-block:clamp(4.5rem,10vw,8rem);
+  text-align:center;
+}
+.closing::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(70% 60% at 50% 0%, rgba(194,155,97,.20), transparent 70%);
+}
+.closing__in{ position:relative; z-index:2; max-width:var(--shell); margin-inline:auto; padding-inline:var(--gutter); }
+.closing h2{
+  color:#fff; font-size:clamp(2.3rem,6vw,3.9rem); letter-spacing:-.01em;
+}
+.closing p{ color:rgba(255,255,255,.72); }
+.closing .cover__rule{ margin-inline:auto; }
+.contact{
+  margin-top:clamp(2.2rem,4.5vw,3rem);
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1.6rem;
+  border-top:1px solid rgba(255,255,255,.14); padding-top:2rem;
+}
+@media (max-width:720px){ .contact{ grid-template-columns:1fr; gap:1.4rem; } }
+.contact dt{
+  font-size:.594rem; letter-spacing:.24em; text-transform:uppercase; color:var(--ochre);
+  margin-bottom:.55rem; font-weight:500;
+}
+.contact dd{ margin:0; font-size:.9375rem; color:rgba(255,255,255,.9); }
+.contact a{ border-bottom:1px solid rgba(194,155,97,.5); padding-bottom:2px; transition:border-color .4s var(--ease); }
+.contact a:hover{ border-color:var(--ochre); }
+.cta{
+  display:inline-block; margin-top:clamp(2.2rem,4.5vw,3rem);
+  border:1px solid var(--ochre); color:var(--ochre);
+  padding:1rem 2.2rem; font-size:.6875rem; letter-spacing:.26em; text-transform:uppercase; font-weight:500;
+  transition:background .5s var(--ease), color .5s var(--ease);
+}
+.cta:hover{ background:var(--ochre); color:#333b42; }
+
+/* footer */
+.foot{ background:#2c3238; color:rgba(255,255,255,.5); }
+.foot__in{
+  max-width:var(--shell); margin-inline:auto; padding:2.2rem var(--gutter);
+  display:flex; flex-wrap:wrap; gap:.8rem 2rem; justify-content:space-between; align-items:center;
+  font-size:.6875rem; letter-spacing:.14em; text-transform:uppercase;
+}
+.foot__in span:first-child{ font-family:var(--serif); letter-spacing:.2em; color:rgba(255,255,255,.72); }
+
+/* ============================================================
+   PRINT — the proposal as a document
+   ============================================================ */
+@media print{
+  .progress,.runhead,.scrollcue{ display:none !important; }
+  .rv{ opacity:1 !important; transform:none !important; }
+  body{ font-size:11pt; }
+  .cover{ min-height:auto; padding-block:3cm; page-break-after:always; }
+  .chapter{ padding-block:2.2cm; page-break-before:always; }
+  .card,.panel,.price,.ask,.tbox,.timeline li,table.fees tr{ break-inside:avoid; }
+  .closing{ background:#fff; color:var(--slate-deep); page-break-before:always; }
+  .closing h2{ color:var(--slate-deep); }
+  .closing p,.closing .contact dd{ color:var(--slate-deep); }
+  .contact{ border-top-color:var(--slate-14); }
+  .foot{ background:#fff; color:var(--slate); }
+  .foot__in span:first-child{ color:var(--slate-deep); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== chrome ===== -->
+<div class="progress" aria-hidden="true"><div class="progress__bar" id="bar"></div></div>
+<header class="runhead" id="runhead" aria-hidden="true">
+  <div class="runhead__in">
+    <span class="runhead__brand">Anchor Point</span>
+    <span class="runhead__now"><span id="rh-num">01</span><span id="rh-label">Cover</span></span>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================================================
+     01 · COVER
+     ============================================================ -->
+<section class="cover" id="s01" data-num="01" data-label="Cover">
+  <div class="cover__in">
+    <div class="cover__top">
+      <span>Brand Proposal</span>
+      <span>Confidential</span>
+    </div>
+
+    <div class="cover__center">
+      <!-- emblem: an abstracted anchor, drawn in hairlines -->
+      <svg class="cover__emblem" viewBox="0 0 60 60" fill="none" aria-hidden="true">
+        <circle cx="30" cy="10.5" r="4.6" stroke="#708090" stroke-width="1.1"/>
+        <line x1="30" y1="15.5" x2="30" y2="51" stroke="#708090" stroke-width="1.1"/>
+        <line x1="18" y1="23.5" x2="42" y2="23.5" stroke="#C29B61" stroke-width="1.1"/>
+        <path d="M13 36.5c0 8.2 7.6 14.5 17 14.5s17-6.3 17-14.5" stroke="#708090" stroke-width="1.1" stroke-linecap="round"/>
+      </svg>
+
+      <h1>Anchor&nbsp;Point</h1>
+      <div class="cover__rule" aria-hidden="true"></div>
+      <p class="cover__sub">Brand Identity &amp; Market Positioning Proposal</p>
+      <p class="cover__tag">Building a distinctive legal brand from the ground up.</p>
+    </div>
+
+    <dl class="cover__meta">
+      <div>
+        <dt>Prepared for</dt>
+        <dd>The Partners</dd>
+      </div>
+      <div>
+        <dt>Prepared by</dt>
+        <dd>Olusanjodami<br>Brand Strategy &amp; Identity</dd>
+      </div>
+      <div>
+        <dt>Date</dt>
+        <dd>October 2026</dd>
+      </div>
+      <div>
+        <dt>Document</dt>
+        <dd>Proposal · v1.0<br>Twelve sections</dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="scrollcue" aria-hidden="true">
+    <span>Scroll</span>
+    <i></i>
+  </div>
+</section>
+
+<!-- ============================================================
+     02 · THE OPPORTUNITY
+     ============================================================ -->
+<section class="chapter" id="s02" data-num="02" data-label="The Opportunity">
+  <div class="shell">
+    <div class="marker rv">
+      <span class="marker__num">02</span>
+      <span class="marker__label">The Opportunity</span>
+      <span class="marker__line"></span>
+    </div>
+
+    <div class="split">
+      <div class="stack rv">
+        <h2 class="title">The Opportunity</h2>
+        <p class="lead">The legal market is crowded with capable firms, and almost entirely undifferentiated in the eyes of the clients who matter most.</p>
+        <p class="body">Clients do not choose counsel by comparing capability alone — capability is assumed. They choose on perception: of stability, of precision, of institutional weight. Today those qualities live inside the firm's relationships. They do not yet live in the market's mind.</p>
+        <ul class="bullets">
+          <li>Legal services are increasingly commoditised. Clients struggle to tell one competent firm from another.</li>
+          <li>Credentials win instructions; identity wins preference. Most firms invest heavily in the former and neglect the latter.</li>
+          <li>Sophisticated clients read brand as a proxy for rigour — how a firm presents itself is how they imagine it will handle their matter.</li>
+          <li>Inconsistent materials — letterheads, documents, decks — quietly erode the premium positioning the work itself deserves.</li>
+          <li>Position is claimed, not inherited. A clear identity can move the firm into an entirely different competitive set.</li>
+        </ul>
+      </div>
+
+      <aside class="split__aside stack-lg rv">
+        <blockquote class="pull">
+          Positioning is not what you say about yourself. It is the space you occupy in a client's mind before you speak.
+          <cite>Anchor Point — Guiding Principle</cite>
+        </blockquote>
+
+        <div class="panel">
+          <p class="panel__title">The brief in three lines</p>
+          <ul class="list">
+            <li>Build a brand that signals Stability, Precision, Trust and Clarity.</li>
+            <li>Differentiate the firm in a crowded market without shouting.</li>
+            <li>Create a system the whole firm can apply, consistently, without supervision.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     03 · OUR BRAND-BUILDING APPROACH
+     ============================================================ -->
+<section class="chapter" id="s03" data-num="03" data-label="Our Approach">
+  <div class="shell">
+    <div class="marker rv">
+      <span class="marker__num">03</span>
+      <span class="marker__label">Our Brand-Building Approach</span>
+      <span class="marker__line"></span>
+    </div>
+
+    <div class="rv">
+      <h2 class="title">Our Brand-Building Approach</h2>
+      <p class="lead" style="margin-top:1.4rem">Five disciplined stages. Nothing decorative — every artefact we produce has a strategic job to do.</p>
+    </div>
+
+    <ol class="steps rv">
+      <li>
+        <span class="steps__k">Stage 01</span>
+        <h3 class="steps__t">Discover</h3>
+        <p class="steps__d">Stakeholder interviews, market and competitor review, and an honest audit of how the firm is currently perceived.</p>
+      </li>
+      <li>
+        <span class="steps__k">Stage 02</span>
+        <h3 class="steps__t">Define</h3>
+        <p class="steps__d">Positioning, values, audience and messaging architecture — written down, agreed, and used as the test for every later decision.</p>
+      </li>
+      <li>
+        <span class="steps__k">Stage 03</span>
+        <h3 class="steps__t">Design</h3>
+        <p class="steps__d">Logo system, colour, typography and visual language, proven in real applications before anything is approved.</p>
+      </li>
+      <li>
+        <span class="steps__k">Stage 04</span>
+        <h3 class="steps__t">Deploy</h3>
+        <p class="steps__d">Rollout across stationery, documents, templates and digital touchpoints — with print-ready and editable files.</p>
+      </li>
+      <li>
+        <span class="steps__k">Stage 05</span>
+        <h3 class="steps__t">Govern</h3>
+        <p class="steps__d">Guidelines, master assets and a custodian checklist so the identity holds its standard long after handover.</p>
+      </li>
+    </ol>
+
+    <div class="split split--even" style="margin-top:clamp(3rem,6vw,4.5rem)">
+      <div class="rv">
+        <h3 class="subtitle">How we work</h3>
+        <ul class="bullets bullets--plain" style="margin-top:.6rem">
+          <li>Senior-led. Strategy and design are delivered by principals, not delegated down.</li>
+          <li>Evidence first. Every positioning decision traces back to discovery.</li>
+          <li>Fixed phases. Clear timelines and deliverables, no scope drift, no surprises.</li>
+          <li>Restraint. We remove more than we add — elegance is what remains.</li>
+        </ul>
+      </div>
+      <div class="split__aside rv">
+        <h3 class="subtitle">What you receive</h3>
+        <ul class="list" style="margin-top:.6rem">
+          <li>Brand strategy &amp; positioning document</li>
+          <li>Logo suite &amp; visual identity system</li>
+          <li>Stationery &amp; collateral suite</li>
+          <li>Document template library</li>
+          <li>Digital &amp; social asset kit</li>
+          <li>Brand guidelines manual</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     04 · PHASE ONE — STRATEGY
+     ============================================================ -->
+<section class="chapter" id="s04" data-num="04" data-label="Strategy &amp; Foundation">
+  <div class="shell">
+    <div class="marker rv">
+      <span class="marker__num">04</span>
+      <span class="marker__label">Phase One — Brand Strategy</span>
+      <span class="marker__line"></span>
+    </div>
+
+    <div class="rv">
+      <div class="phase-head">
+        <span class="chip">Phase 1</span>
+      </div>
+      <h2 class="title">Strategy &amp; Foundation</h2>
+      <p class="lead" style="margin-top:1.4rem">Before a single mark is drawn, we establish what the firm stands for — and for whom. This is the ground everything else is anchored to.</p>
+    </div>
+
+    <div class="split" style="margin-top:clamp(2.6rem,5vw,3.6rem)">
+      <div class="stack-lg rv">
+        <blockquote class="pull">
+          For corporate and institutional clients who need counsel that is measured, meticulous and unfailingly dependable, the firm is the practice that holds steady when the matter becomes complex.
+          <cite>Draft positioning statement</cite>
+        </blockquote>
+
+        <div class="values">
+          <div class="value">
+            <h4>Stability</h4>
+            <p>A practice that does not waver when pressure arrives.</p>
+          </div>
+          <div class="value">
+            <h4>Precision</h4>
+            <p>The right detail, at the right time, every time.</p>
+          </div>
+          <div class="value">
+            <h4>Trust</h4>
+            <p>Earned through consistency, never through claims.</p>
+          </div>
+          <div class="value">
+            <h4>Clarity</h4>
+            <p>Plain answers to complicated questions.</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="split__aside stack-lg rv">
+        <div>
+          <h3 class="subtitle">Who we are speaking to</h3>
+          <ul class="list">
+            <li>Corporate &amp; commercial clients</li>
+            <li>Banks, funds &amp; financial institutions</li>
+            <li>Family offices &amp; private clients</li>
+            <li>Multinationals entering the market</li>
+            <li>Public sector &amp; regulated entities</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="subtitle">Phase deliverables</h3>
+          <ul class="list list--check">
+            <li>Discovery workshop with the partners</li>
+            <li>Market &amp; competitor positioning map</li>
+            <li>Positioning statement &amp; value pillars</li>
+            <li>Audience profiles &amp; messaging framework</li>
+            <li>Tone-of-voice principles</li>
+            <li>Tagline concept directions</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <div class="price rv">
+      <div class="price__fee"><span class="cur">₦</span>650,000</div>
+      <div class="price__sep" aria-hidden="true"></div>
+      <dl class="price__side" style="margin:0">
+        <dt>Timeline</dt>
+        <dd class="dur">2 weeks</dd>
+        <dt>Phase</dt>
+        <dd>Phase 1 — Brand Strategy &amp; Positioning</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     05 · TAGLINE CONCEPT DIRECTIONS
+     ============================================================ -->
+<section class="chapter" id="s05" data-num="05" data-label="Tagline Directions">
+  <div class="shell">
+    <div class="marker rv">
+      <span class="marker__num">05</span>
+      <span class="marker__label">Tagline Concept Directions</span>
+      <span class="marker__line"></span>
+    </div>
+
+    <div class="rv">
+      <h2 class="title">Tagline Concept Directions</h2>
+      <p class="lead" style="margin-top:1.4rem">Three verbal directions, each anchored to the same strategic ground. One will be developed into the firm's signature line.</p>
+    </div>
+
+    <div class="tbox rv">
+      <div class="tbox__row">
+        <div>
+          <span class="tbox__dir">Direction One</span>
+          <h3 class="tbox__name">The Anchor</h3>
+        </div>
+        <div>
+          <p class="tbox__line">Steady counsel. Sound judgement.</p>
+          <p class="tbox__why">Frames the firm as the fixed point in unsettled matters. It carries the name without labouring it, and reads as a promise rather than a slogan.</p>
+        </div>
+      </div>
+      <div class="tbox__row">
+        <div>
+          <span class="tbox__dir">Direction Two</span>
+          <h3 class="tbox__name">Precision</h3>
+        </div>
+        <div>
+          <p class="tbox__line">Every detail, considered.</p>
+          <p class="tbox__why">Speaks directly to the firm's operating standard. Understated, confident, and easy for any partner to say out loud in a first meeting.</p>
+        </div>
+      </div>
+      <div class="tbox__row">
+        <div>
+          <span class="tbox__dir">Direction Three</span>
+          <h3 class="tbox__name">Endurance</h3>
+        </div>
+        <div>
+          <p class="tbox__line">Counsel you can build on.</p>
+          <p class="tbox__why">Positions the firm in the client's own language — long-term, structural, dependable. Best suited to a practice with deep institutional relationships.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="note rv" style="margin-top:1.4rem">Each direction is stress-tested against the firm's actual client language, then refined with the partners before selection. The chosen line becomes the anchor for all messaging.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     06 · PHASE TWO — LOGO STRATEGY
+     ============================================================ -->
+<section class="chapter" id="s06" data-num="06" data-label="Logo Strategy">
+  <div class="shell">
+    <div class="marker rv">
+      <span class="marker__num">06</span>
+      <span class="marker__label">Phase Two — Logo Strategy</span>
+      <span class="marker__line"></span>
+    </div>
+
+    <div class="rv">
+      <div class="phase-head"><span class="chip">Phase 2</span></div>
+      <h2 class="title">Logo Strategy &amp; Visual Identity</h2>
+      <p class="lead" style="margin-top:1.4rem">The mark must hold its presence as a signature on a letter and as a stamp on a document of consequence — quiet, legible, and unmistakable at any size.</p>
+    </div>
+
+    <div class="cards">
+      <article class="card rv">
+        <div class="card__stage">
+          <div class="mono" aria-hidden="true"><i>A</i><i>P</i></div>
+        </div>
+        <span class="card__k">Concept A</span>
+        <h3 class="card__t">The Monogram</h3>
+        <p class="card__d">A refined serif monogram set within a hairline roundel. It signals tradition and restraint, and performs beautifully as a seal across documents, stationery and signage.</p>
+        <div class="card__sig">
+          <span>Heritage</span>
+          <span>Authority</span>
+          <span>Discretion</span>
+        </div>
+      </article>
+
+      <article class="card rv">
+        <div class="card__stage">
+          <svg viewBox="0 0 120 120" width="86" height="86" fill="none" aria-hidden="true">
+            <circle cx="60" cy="26" r="8" stroke="#708090" stroke-width="2"/>
+            <line x1="60" y1="36" x2="60" y2="98" stroke="#708090" stroke-width="2"/>
+            <line x1="38" y1="50" x2="82" y2="50" stroke="#C29B61" stroke-width="2"/>
+            <path d="M30 74c0 16.6 13.4 24 30 24s30-7.4 30-24" stroke="#708090" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="card__k">Concept B</span>
+        <h3 class="card__t">The Anchor Mark</h3>
+        <p class="card__d">An abstracted anchor redrawn in pure geometry — vertical weight, horizontal balance, no nautical nostalgia. The name made visible without illustration.</p>
+        <div class="card__sig">
+          <span>Stability</span>
+          <span>Certainty</span>
+          <span>Structure</span>
+        </div>
+      </article>
+
+      <article class="card rv">
+        <div class="card__stage">
+          <div class="wordmark" aria-hidden="true">
+            <b>Anchor</b>
+            <em></em>
+            <span>Point</span>
+          </div>
+        </div>
+        <span class="card__k">Concept C</span>
+        <h3 class="card__t">The Wordmark</h3>
+        <p class="card__d">A custom-drawn typographic wordmark. Letterforms refined for spacing, weight and proportion so the name alone carries the identity — the most confident, least literal of the three.</p>
+        <div class="card__sig">
+          <span>Confidence</span>
+          <span>Clarity</span>
+          <span>Restraint</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="split split--even rv" style="margin-top:clamp(2.6rem,5vw,3.6rem)">
+      <div>
+        <h3 class="subtitle">Identity system deliverables</h3>
+        <ul class="list">
+          <li>Primary logo, secondary logo &amp; monogram</li>
+          <li>Clear-space, sizing &amp; placement rules</li>
+          <li>Colour palette — print &amp; digital values</li>
+          <li>Typography system &amp; hierarchy</li>
+          <li>Iconography &amp; supporting graphic devices</li>
+        </ul>
+      </div>
+      <div class="split__aside">
+        <h3 class="subtitle">The test we apply</h3>
+        <ul class="bullets bullets--plain" style="margin-top:.6rem">
+          <li>Does it read clearly at 15mm and at three metres?</li>
+          <li>Does it survive black-and-white reproduction?</li>
+          <li>Does it look like a firm of consequence — without ornament?</li>
+          <li>Does it still work in ten years?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="price rv">
+      <div class="price__fee"><span class="cur">₦</span>850,000</div>
+      <div class="price__sep" aria-hidden="true"></div>
+      <dl class="price__side" style="margin:0">
+        <dt>Timeline</dt>
+        <dd class="dur">3 weeks</dd>
+        <dt>Phase</dt>
+        <dd>Phase 2 — Logo &amp; Visual Identity System</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     07 · PHASE THREE
+     ============================================================ -->
+<section class="chapter" id="s07" data-num="07" data-label="Phase Three">
+  <div class="shell">
+    <div class="marker rv">
+      <span class="marker__num">07</span>
+      <span class="marker__label">Phase Three — Collateral</span>
+      <span class="marker__line"></span>
+    </div>
+
+    <div class="rv">
+      <div class="phase-head"><span class="chip">Phase 3</span></div>
+      <h2 class="title">Stationery &amp; Collateral Suite</h2>
+      <p class="lead" style="margin-top:1.4rem">The physical surfaces where clients meet the brand first. Every piece is specified, print-ready, and produced to a single system.</p>
+    </div>
+
+    <div class="cols rv" style="margin-top:clamp(2.4rem,5vw,3.2rem)">
+      <div>
+        <h3 class="subtitle">Stationery suite</h3>
+        <ul class="list">
+          <li>Business cards — partners &amp; associates</li>
+          <li>Letterhead, A4 first page</li>
+          <li>Continuation &amp; second sheets</li>
+          <li>Compliments slip</li>
+          <li>Envelopes — DL &amp; C5</li>
+          <li>Document wallet &amp; firm folder</li>
+          <li>Notepads &amp; memo sheets</li>
+          <li>Name badges &amp; lanyards</li>
+          <li>Email signature — HTML</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="subtitle">Collateral &amp; presence</h3>
+        <ul class="list">
+          <li>Engagement &amp; pitch folder</li>
+          <li>Presentation cover system</li>
+          <li>Conference &amp; event backdrop</li>
+          <li>Roll-up banner</li>
+          <li>Signage &amp; door plates</li>
+          <li>Meeting &amp; court folio</li>
+          <li>Corporate seal &amp; stamps</li>
+          <li>Certificates &amp; plaques</li>
+          <li>Stationery specification sheet</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="price rv">
+      <div class="price__fee"><span class="cur">₦</span>450,000</div>
+      <div class="price__sep" aria-hidden="true"></div>
+      <dl class="price__side" style="margin:0">
+        <dt>Timeline</dt>
+        <dd class="dur">2 weeks</dd>
+        <dt>Phase</dt>
+        <dd>Phase 3 — Stationery &amp; Collateral Suite</dd>
+      </dl>
+    </div>
+    <p class="note rv" style="margin-top:1.1rem">Print production, paper stock and material costs are quoted separately and billed at cost.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     08 · PHASE FOUR
+     ============================================================ -->
+<section class="chapter" id="s08" data-num="08" data-label="Phase Four">
+  <div class="shell">
+    <div class="marker rv">
+      <span class="marker__num">08</span>
+      <span class="marker__label">Phase Four — Templates &amp; Digital</span>
+      <span class="marker__line"></span>
+    </div>
+
+    <div class="rv">
+      <div class="phase-head"><span class="chip">Phase 4</span></div>
+      <h2 class="title">Document Templates &amp; Digital Presence</h2>
+      <p class="lead" style="margin-top:1.4rem">Most client touchpoints are documents. We turn them into brand assets — consistent, professional, and effortlessly reusable by the whole firm.</p>
+    </div>
+
+    <div class="cols rv" style="margin-top:clamp(2.4rem,5vw,3.2rem)">
+      <div>
+        <h3 class="subtitle">Document templates</h3>
+        <ul class="list">
+          <li>Letterhead — Word &amp; Google Docs</li>
+          <li>Engagement letter</li>
+          <li>Letter of advice</li>
+          <li>Legal opinion format</li>
+          <li>Memorandum &amp; file notes</li>
+          <li>Brief &amp; case cover sheets</li>
+          <li>Invoice &amp; statement of account</li>
+          <li>Fee proposal &amp; scope of work</li>
+          <li>Pitch &amp; capability deck</li>
+          <li>Report &amp; due-diligence covers</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="subtitle">Digital presence</h3>
+        <ul class="list">
+          <li>Website design direction &amp; page structure</li>
+          <li>Landing page &amp; enquiry layout</li>
+          <li>LinkedIn company &amp; profile kit</li>
+          <li>Social post &amp; carousel templates</li>
+          <li>Google Business profile styling</li>
+          <li>Email signature &amp; newsletter template</li>
+          <li>Meeting &amp; webinar backgrounds</li>
+          <li>Digital asset library &amp; naming system</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="price rv">
+      <div class="price__fee"><span class="cur">₦</span>600,000</div>
+      <div class="price__sep" aria-hidden="true"></div>
+      <dl class="price__side" style="margin:0">
+        <dt>Timeline</dt>
+        <dd class="dur">3 weeks</dd>
+        <dt>Phase</dt>
+        <dd>Phase 4 — Document Templates &amp; Digital Presence</dd>
+      </dl>
+    </div>
+    <p class="note rv" style="margin-top:1.1rem">Website build, development and hosting are outside this scope and can be quoted separately.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     09 · PHASE FIVE
+     ============================================================ -->
+<section class="chapter" id="s09" data-num="09" data-label="Phase Five">
+  <div class="shell">
+    <div class="marker rv">
+      <span class="marker__num">09</span>
+      <span class="marker__label">Phase Five — Governance</span>
+      <span class="marker__line"></span>
+    </div>
+
+    <div class="rv">
+      <div class="phase-head"><span class="chip">Phase 5</span></div>
+      <h2 class="title">Brand Guidelines &amp; Governance</h2>
+      <p class="lead" style="margin-top:1.4rem">Consistency is the difference between a logo and a brand. The guidelines make the identity repeatable by anyone in the firm, without supervision.</p>
+    </div>
+
+    <div class="cols rv" style="margin-top:clamp(2.4rem,5vw,3.2rem)">
+      <div>
+        <h3 class="subtitle">Brand guidelines manual</h3>
+        <ul class="list">
+          <li>Positioning &amp; brand story</li>
+          <li>Logo usage &amp; misuse rules</li>
+          <li>Clear space, sizing &amp; placement</li>
+          <li>Colour system — print &amp; digital</li>
+          <li>Typography &amp; hierarchy</li>
+          <li>Layout &amp; grid principles</li>
+          <li>Imagery &amp; photography direction</li>
+          <li>Tone of voice &amp; writing rules</li>
+          <li>Application examples</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="subtitle">Governance &amp; handover</h3>
+        <ul class="list">
+          <li>Master asset library in all formats</li>
+          <li>Editable source files &amp; licences</li>
+          <li>Print specifications &amp; vendor notes</li>
+          <li>Team training session</li>
+          <li>Brand custodian checklist</li>
+          <li>Quarterly brand review — first year</li>
+          <li>Ongoing support terms</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="price rv">
+      <div class="price__fee"><span class="cur">₦</span>350,000</div>
+      <div class="price__sep" aria-hidden="true"></div>
+      <dl class="price__side" style="margin:0">
+        <dt>Timeline</dt>
+        <dd class="dur">2 weeks</dd>
+        <dt>Phase</dt>
+        <dd>Phase 5 — Brand Guidelines &amp; Governance</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     10 · INVESTMENT SUMMARY
+     ============================================================ -->
+<section class="chapter" id="s10" data-num="10" data-label="Investment Summary">
+  <div class="shell">
+    <div class="marker rv">
+      <span class="marker__num">10</span>
+      <span class="marker__label">Investment Summary</span>
+      <span class="marker__line"></span>
+    </div>
+
+    <div class="rv">
+      <h2 class="title">Investment Summary</h2>
+      <p class="lead" style="margin-top:1.4rem">A single engagement, five phases, one complete brand system — delivered in twelve weeks.</p>
+    </div>
+
+    <div class="tablewrap rv">
+      <table class="fees">
+        <caption>Fees quoted in Nigerian Naira (₦)</caption>
+        <thead>
+          <tr>
+            <th scope="col">Phase</th>
+            <th scope="col">Scope</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Investment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Phase 1<br><span class="muted" style="font-family:var(--sans);font-size:.8125rem;letter-spacing:0">Brand Strategy &amp; Positioning</span></th>
+            <td>Discovery workshop, positioning, values, messaging architecture, tagline directions</td>
+            <td>2 weeks</td>
+            <td class="amt">₦650,000</td>
+          </tr>
+          <tr>
+            <th scope="row">Phase 2<br><span class="muted" style="font-family:var(--sans);font-size:.8125rem;letter-spacing:0">Logo &amp; Visual Identity</span></th>
+            <td>Logo suite, monogram, colour, typography, identity sheet, application tests</td>
+            <td>3 weeks</td>
+            <td class="amt">₦850,000</td>
+          </tr>
+          <tr>
+            <th scope="row">Phase 3<br><span class="muted" style="font-family:var(--sans);font-size:.8125rem;letter-spacing:0">Stationery &amp; Collateral</span></th>
+            <td>Full stationery suite, print collateral, signage, print-ready artwork</td>
+            <td>2 weeks</td>
+            <td class="amt">₦450,000</td>
+          </tr>
+          <tr>
+            <th scope="row">Phase 4<br><span class="muted" style="font-family:var(--sans);font-size:.8125rem;letter-spacing:0">Templates &amp; Digital</span></th>
+            <td>Document template library, digital &amp; social kit, website design direction</td>
+            <td>3 weeks</td>
+            <td class="amt">₦600,000</td>
+          </tr>
+          <tr>
+            <th scope="row">Phase 5<br><span class="muted" style="font-family:var(--sans);font-size:.8125rem;letter-spacing:0">Guidelines &amp; Governance</span></th>
+            <td>Guidelines manual, master asset library, training and handover</td>
+            <td>2 weeks</td>
+            <td class="amt">₦350,000</td>
+          </tr>
+          <tr class="total">
+            <th scope="row">Total</th>
+            <td>Five phases · one complete brand system</td>
+            <td>12 weeks</td>
+            <td class="amt">₦2,900,000</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="note" style="margin-top:1.2rem;max-width:78ch">Fees are exclusive of VAT. Third-party costs — printing, paper stock, font licensing, domains and photography — are billed at cost with prior approval. Option A carries a 5% saving on the total.</p>
+    </div>
+
+    <div class="rv" style="margin-top:clamp(3rem,6vw,4.2rem)">
+      <h3 class="subtitle" style="margin-bottom:0">Payment options</h3>
+    </div>
+
+    <div class="pay rv">
+      <div class="pay__item is-lead">
+        <h4 class="pay__k">Option A</h4>
+        <p class="pay__t">Full payment — ₦2,755,000</p>
+        <p class="pay__d">100% on engagement, inclusive of a 5% saving. Priority scheduling and the strongest value across the engagement.</p>
+      </div>
+      <div class="pay__item">
+        <h4 class="pay__k">Option B</h4>
+        <p class="pay__t">Milestone payments</p>
+        <p class="pay__d">50% on commencement · 25% at identity sign-off · 25% on delivery of the full brand system.</p>
+      </div>
+      <div class="pay__item">
+        <h4 class="pay__k">Option C</h4>
+        <p class="pay__t">Phase by phase</p>
+        <p class="pay__d">Five instalments, each released as a phase completes — the most flexible schedule for cash-flow planning.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     11 · IMPLEMENTATION ROADMAP
+     ============================================================ -->
+<section class="chapter" id="s11" data-num="11" data-label="Implementation Roadmap">
+  <div class="shell">
+    <div class="marker rv">
+      <span class="marker__num">11</span>
+      <span class="marker__label">Implementation Roadmap</span>
+      <span class="marker__line"></span>
+    </div>
+
+    <div class="rv">
+      <h2 class="title">Twelve Weeks, One Launch</h2>
+      <p class="lead" style="margin-top:1.4rem">A realistic sequence that respects the demands of a working practice. Feedback inside three business days keeps it on schedule.</p>
+    </div>
+
+    <ol class="timeline">
+      <li class="rv">
+        <span class="tl__when">Week 0</span>
+        <h3 class="tl__t">Discovery &amp; Immersion</h3>
+        <p class="tl__d">Kick-off workshop with the partners, stakeholder interviews, review of existing materials and a clear picture of how the firm is perceived today.</p>
+      </li>
+      <li class="rv">
+        <span class="tl__when">Weeks 1–2 · Phase 1 complete</span>
+        <h3 class="tl__t">Strategy &amp; Positioning</h3>
+        <p class="tl__d">Positioning statement, values, audience and messaging framework signed off. The tagline direction is selected and agreed.</p>
+      </li>
+      <li class="rv">
+        <span class="tl__when">Weeks 3–5 · Phase 2 complete</span>
+        <h3 class="tl__t">Visual Identity</h3>
+        <p class="tl__d">Logo concepts presented and tested in real applications; the final mark and identity system are approved.</p>
+      </li>
+      <li class="rv">
+        <span class="tl__when">Weeks 6–7 · Phase 3 complete</span>
+        <h3 class="tl__t">Stationery &amp; Collateral</h3>
+        <p class="tl__d">Artwork released to print, proofs reviewed, and printed samples approved before full production.</p>
+      </li>
+      <li class="rv">
+        <span class="tl__when">Weeks 8–10 · Phase 4 complete</span>
+        <h3 class="tl__t">Templates &amp; Digital</h3>
+        <p class="tl__d">Document library deployed across the firm; digital and social assets handed over with usage notes.</p>
+      </li>
+      <li class="rv">
+        <span class="tl__when">Weeks 11–12 · Phase 5</span>
+        <h3 class="tl__t">Guidelines &amp; Handover</h3>
+        <p class="tl__d">Guidelines manual delivered, master files transferred, and the team trained to run the brand independently.</p>
+      </li>
+      <li class="is-launch rv">
+        <span class="tl__when">Week 13</span>
+        <h3 class="tl__t">Brand Launch</h3>
+        <p class="tl__d">The identity goes live across every touchpoint — internal launch session, client-facing materials, and full rollout.</p>
+      </li>
+    </ol>
+
+    <p class="note rv" style="margin-top:2rem;max-width:78ch">Timelines assume consolidated partner feedback within three business days at each review stage. Slippage in feedback shifts the schedule accordingly.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     12 · PARTNERS · NEXT STEPS · WHY US
+     ============================================================ -->
+<section class="chapter" id="s12" data-num="12" data-label="Next Steps">
+  <div class="shell">
+    <div class="marker rv">
+      <span class="marker__num">12</span>
+      <span class="marker__label">Next Steps &amp; Working Together</span>
+      <span class="marker__line"></span>
+    </div>
+
+    <!-- partner asks -->
+    <div class="stack-lg">
+      <div class="rv">
+        <h2 class="title">What We Need From the Partners</h2>
+        <p class="lead" style="margin-top:1.4rem">The engagement moves quickly when these six things are in place. Everything else is ours to carry.</p>
+      </div>
+
+      <div class="ask rv">
+        <ol class="numbered numbered--loose">
+          <li><strong>A single point of contact.</strong> One partner with authority to consolidate partner feedback and give final approval.</li>
+          <li><strong>Two hours with all partners.</strong> A discovery session at the outset — the single most valuable input to the strategy.</li>
+          <li><strong>Access to existing materials.</strong> Letterheads, templates, pitch decks, and website or domain administration.</li>
+          <li><strong>Feedback within three business days.</strong> At each review stage, so the schedule holds.</li>
+          <li><strong>Sign-off on positioning first.</strong> Strategy approved before design begins; this protects the timeline.</li>
+          <li><strong>Commencement payment.</strong> Fifty percent to activate the schedule and reserve the delivery window.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- next steps -->
+    <div class="split split--even" style="margin-top:clamp(3.4rem,7vw,5rem)">
+      <div class="rv">
+        <h3 class="subtitle">Next steps</h3>
+        <ol class="numbered" style="margin-top:.6rem">
+          <li>Review this proposal and note any questions or adjustments.</li>
+          <li>Confirm the selected scope and preferred payment option.</li>
+          <li>We issue the engagement letter for signature.</li>
+          <li>Commencement payment is made to lock the delivery window.</li>
+          <li>Kick-off within five working days of payment. Discovery begins.</li>
+        </ol>
+      </div>
+
+      <div class="split__aside rv">
+        <h3 class="subtitle">Why work with us</h3>
+        <div style="margin-top:.6rem">
+          <div class="value" style="border-top-color:var(--ochre-line)">
+            <h4>Senior-led, end to end</h4>
+            <p>Strategy and design are delivered by principals. No hand-offs, no dilution of thinking.</p>
+          </div>
+          <div class="value">
+            <h4>Process before decoration</h4>
+            <p>Every decision traces back to discovery and is documented so the firm can defend its own brand.</p>
+          </div>
+          <div class="value">
+            <h4>Built for the long term</h4>
+            <p>We deliver systems, not one-off files — the firm can run the identity without us.</p>
+          </div>
+          <div class="value">
+            <h4>Discretion by default</h4>
+            <p>We work quietly with professional services firms whose reputation is their principal asset.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CLOSING — QUESTIONS?
+     ============================================================ -->
+<section class="closing" id="end">
+  <div class="closing__in">
+    <div class="rv">
+      <h2>Questions?</h2>
+      <div class="cover__rule" aria-hidden="true"></div>
+      <p class="lead" style="margin-inline:auto;color:rgba(255,255,255,.72);max-width:52ch">We are glad to walk the partners through any part of this proposal — the strategy, the fees, or the schedule. There is no obligation and no pressure.</p>
+    </div>
+
+    <dl class="contact rv">
+      <div>
+        <dt>Email</dt>
+        <dd><a href="mailto:hello@olusanjodami.com">hello@olusanjodami.com</a></dd>
+      </div>
+      <div>
+        <dt>Telephone / WhatsApp</dt>
+        <dd><a href="tel:+2348000000000">+234 800 000 0000</a></dd>
+      </div>
+      <div>
+        <dt>Prepared by</dt>
+        <dd>Olusanjodami — Brand Strategy &amp; Identity</dd>
+      </div>
+    </dl>
+
+    <a class="cta rv" href="mailto:hello@olusanjodami.com?subject=Anchor%20Point%20—%20Brand%20Proposal">Start the conversation</a>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot__in">
+    <span>Anchor Point</span>
+    <span>Brand Identity &amp; Market Positioning Proposal</span>
+    <span>Confidential · October 2026</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- reveal on scroll (with automatic stagger) ---------- */
+  var items = Array.prototype.slice.call(document.querySelectorAll(".rv"));
+
+  function stagger(el){
+    var parent = el.parentElement, i = 0;
+    if(!parent) return 0;
+    var sibs = parent.children;
+    for(var k = 0; k < sibs.length; k++){
+      if(sibs[k] === el) break;
+      if(sibs[k].classList && sibs[k].classList.contains("rv")) i++;
+    }
+    return Math.min(i, 6) * 90;
+  }
+
+  if(reduce || !("IntersectionObserver" in window)){
+    items.forEach(function(el){ el.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          var el = entry.target;
+          el.style.transitionDelay = stagger(el) + "ms";
+          el.classList.add("in");
+          io.unobserve(el);
+        }
+      });
+    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.06 });
+
+    items.forEach(function(el){ io.observe(el); });
+  }
+
+  /* ---------- reading progress + running header ---------- */
+  var bar     = document.getElementById("bar");
+  var head    = document.getElementById("runhead");
+  var cover   = document.getElementById("s01");
+  var rhNum   = document.getElementById("rh-num");
+  var rhLabel = document.getElementById("rh-label");
+  var sections = Array.prototype.slice.call(document.querySelectorAll("section[data-label]"));
+  var ticking = false;
+
+  function paint(){
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - window.innerHeight;
+    var y   = window.pageYOffset || doc.scrollTop || 0;
+    if(bar) bar.style.width = (max > 0 ? Math.min(100, (y / max) * 100) : 0) + "%";
+
+    if(head && cover){
+      var past = y > (cover.offsetHeight - 120);
+      head.classList.toggle("is-shown", past);
+      head.setAttribute("aria-hidden", past ? "false" : "true");
+    }
+    ticking = false;
+  }
+
+  function onScroll(){
+    if(!ticking){ ticking = true; window.requestAnimationFrame(paint); }
+  }
+  window.addEventListener("scroll", onScroll, { passive:true });
+  window.addEventListener("resize", onScroll);
+  paint();
+
+  if("IntersectionObserver" in window && rhNum && rhLabel){
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          rhNum.textContent   = entry.target.getAttribute("data-num") || "01";
+          rhLabel.textContent = entry.target.getAttribute("data-label") || "";
+        }
+      });
+    }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+    sections.forEach(function(s){ spy.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>
